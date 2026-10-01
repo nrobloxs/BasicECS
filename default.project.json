@@ -1,0 +1,6 @@
+{
+  "name": "BasicECS",
+  "tree": {
+     "$path": "src"
+  }
+}
