@@ -1,8 +1,7 @@
 --!strict
 
 local CollectionService = game:GetService("CollectionService")
-
-local Types = require(script.Parent.Types)
+local Types = require(script.Parent.ReadData.Types)
 local Utility = require(script.Parent.Utility)
 
 export type Component = Types.Component
@@ -355,8 +354,7 @@ function ComponentManager.Init(self: ComponentManager, ComponentsFolder: Folder)
 		return
 	end
 
-	local Folder = ComponentsFolder or script.Parent.Components
-	self._RootFolder = Folder
+	self._RootFolder = ComponentsFolder
 	if not self._RootFolder then
 		warn(`{LOG_PREFIX}No "Components" folder found next to the manager`)
 		return
