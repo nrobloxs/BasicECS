@@ -50,9 +50,10 @@ export type ComponentManager = {
 	_Classes: { [string]: ComponentClass | false }, -- false = failed to load, don't retry
 	_Connections: { RBXScriptConnection },
 	_Initialized: boolean,
+	_RootFolder: Folder,
 
 	-- Lifecycle
-	Init: (self: ComponentManager) -> (),
+	Init: (self: ComponentManager, ComponentsFolder: Folder) -> (),
 	Destroy: (self: ComponentManager) -> (),
 
 	-- Mutation

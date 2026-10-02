@@ -36,8 +36,7 @@ local function _GetClass(self: ComponentManager, ComponentTag: string): Componen
 		return if Cached then Cached else nil
 	end
 
-	local Folder = script.Parent:FindFirstChild("Components")
-	local Module = if Folder then Folder:FindFirstChild(ComponentTag) else nil
+	local Module = if self._RootFolder then self._RootFolder:FindFirstChild(ComponentTag) else nil
 	if not Module or not Module:IsA("ModuleScript") then
 		return nil
 	end
@@ -350,24 +349,26 @@ function ComponentManager.ReturnEntitiesOfComponent(self: ComponentManager, Comp
 	return Entities
 end
 
-function ComponentManager.Init(self: ComponentManager)
+function ComponentManager.Init(self: ComponentManager, ComponentsFolder: Folder)
 	if self._Initialized then
 		warn(`{LOG_PREFIX}Init called more than once`)
 		return
 	end
-	self._Initialized = true
 
-	local Folder = script.Parent:FindFirstChild("Components")
-	if not Folder then
+	local Folder = ComponentsFolder or script.Parent.Components
+	self._RootFolder = Folder
+	if not self._RootFolder then
 		warn(`{LOG_PREFIX}No "Components" folder found next to the manager`)
 		return
 	end
 
-	for _, Module in Folder:GetChildren() do
+	for _, Module in self._RootFolder:GetChildren() do
 		if Module:IsA("ModuleScript") and Utility.IsComponentTag(Module.Name) then
 			_Track(self, Module.Name)
 		end
 	end
+
+	self._Initialized = true
 end
 
 --- Disconnects everything and destroys all live components. Tags are left untouched.
